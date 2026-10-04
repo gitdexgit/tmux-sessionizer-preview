@@ -1,3 +1,10 @@
+
+
+https://github.com/user-attachments/assets/c5227479-c672-44bd-b99a-36c74b1b550d
+
+<img width="1361" height="784" alt="image" src="https://github.com/user-attachments/assets/de4297b0-11fb-4606-9866-fc56eaa4420a" />
+
+
 # tmux-sessionizer-previewer
 
 
