@@ -30,7 +30,7 @@ case "$item" in
   ;;
 *)
   if [ -d "$item" ]; then
-    ls -la "$item"
+    ls -lA -b --color=always -- "$item" | tr -d '\r\000-\010\013\014\016-\032\034-\037'
   elif [ -f "$item" ]; then
     bat --color=always --style=numbers --line-range=:500 "$item" 2>/dev/null || head -n 100 "$item"
   else
