@@ -2,14 +2,19 @@
 
 port=$((20000 + RANDOM % 20000))
 
-# refresh preview every 1s, stops when fzf dies
+flag="/tmp/tmux-pick-$port.paused"
+
+# refresh preview every 1s, skip while paused
 (
   while sleep 1; do
+    [[ -f "$flag" ]] && continue
     curl -s -XPOST "localhost:$port" -d refresh-preview >/dev/null 2>&1 || break
   done
 ) &
 refresher=$!
-trap 'kill $refresher 2>/dev/null' EXIT
+
+trap 'kill $refresher 2>/dev/null; rm -f "$flag" "/tmp/tmux-pick-$port.off"' EXIT
+
 
 selection=$(
   {
@@ -18,7 +23,11 @@ selection=$(
   } | fzf --listen="$port" \
     --preview-window='up:65%:wrap' \
     --preview='bash ~/.local/bin/fzf-preview {}' \
-    --bind='alt-j:preview-down,alt-k:preview-up,alt-w:toggle-wrap' \
+    --bind="alt-j:execute-silent(bash ~/.local/bin/scroll.sh $port 3)+refresh-preview" \
+    --bind="alt-k:execute-silent(bash ~/.local/bin/scroll.sh $port -3)+refresh-preview" \
+    --bind="focus:execute-silent(echo 0 > /tmp/tmux-pick-$port.off)" \
+    --bind='alt-w:toggle-wrap' \
+    --bind="alt-r:execute-silent(test -f $flag && rm $flag || touch $flag)+transform-header(test -f $flag && echo PAUSED)" \
     --bind='alt-1:execute-silent(bash ~/.local/bin/win.sh {} 1)+refresh-preview' \
     --bind='alt-2:execute-silent(bash ~/.local/bin/win.sh {} 2)+refresh-preview' \
     --bind='alt-3:execute-silent(bash ~/.local/bin/win.sh {} 3)+refresh-preview' \
