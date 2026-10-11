@@ -38,9 +38,15 @@ Run `tmux-pick`. Pick a tmux session, or a directory under `$HOME` (depth 2). A 
 | alt-1 .. alt-5 | switch window in previewed session |
 | F1 .. F5 | switch pane in previewed session |
 | alt-j / alt-k | scroll preview down / up |
-| alt-r | pause / resume auto refresh |
+| alt-c | pause / resume auto refresh |
+| alt-r | move preview item |
+| alt-s | move next item |
+| alt-g | move preview all the way down |
+| alt-G | move preview all the way up |
+| alt-u | move preview all the way up |
 | alt-w | toggle line wrap |
 | enter | open selection |
+
 
 ## How it works
 
